@@ -1,0 +1,14 @@
+<div class="welcome-section">
+    <h1><i class="bi bi-book"></i> Welcome to LibraryMS</h1>
+    <p>Your digital library companion. Browse, borrow, and read thousands of books.</p>
+    <div class="mt-4">
+        <a href="/books" class="btn btn-light me-2">
+            <i class="bi bi-collection"></i> Browse Books
+        </a>
+        <% if (!user) { %>
+            <a href="/register" class="btn btn-outline-light">
+                <i class="bi bi-person-plus"></i> Join Now
+            </a>
+        <% } %>
+    </div>
+</div>

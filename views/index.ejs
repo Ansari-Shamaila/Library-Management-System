@@ -1,0 +1,129 @@
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75 py-5">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h1 class="display-3 fw-bold mb-4">Welcome to <span class="text-warning">LibraryMS</span></h1>
+                <p class="lead mb-4">Your complete digital library solution. Discover, borrow, and manage books with ease.</p>
+                <div class="d-flex gap-3">
+                    <a href="/books" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-book-open me-2"></i>Browse Books
+                    </a>
+                    <% if (!user) { %>
+                        <a href="/register" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-user-plus me-2"></i>Join Now
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                     alt="Library" class="img-fluid rounded-3 shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6" data-aos="zoom-in">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm">
+                    <i class="fas fa-book fa-3x text-primary mb-3"></i>
+                    <h3 class="h2 fw-bold"><%= stats.totalBooks %>+</h3>
+                    <p class="text-muted mb-0">Total Books</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm">
+                    <i class="fas fa-users fa-3x text-success mb-3"></i>
+                    <h3 class="h2 fw-bold"><%= stats.totalMembers %>+</h3>
+                    <p class="text-muted mb-0">Active Members</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm">
+                    <i class="fas fa-hand-holding-heart fa-3x text-info mb-3"></i>
+                    <h3 class="h2 fw-bold"><%= stats.dailyLoans %>+</h3>
+                    <p class="text-muted mb-0">Daily Loans</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stat-card text-center p-4 bg-white rounded-3 shadow-sm">
+                    <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                    <h3 class="h2 fw-bold"><%= stats.rating %></h3>
+                    <p class="text-muted mb-0">User Rating</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <h2 class="text-center display-6 fw-bold mb-5" data-aos="fade-up">Why Choose <span class="text-primary">Us?</span></h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon bg-primary text-white mx-auto mb-4">
+                        <i class="fas fa-search fa-2x"></i>
+                    </div>
+                    <h4>Easy Search</h4>
+                    <p class="text-muted">Find books by title, author, or category instantly</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon bg-success text-white mx-auto mb-4">
+                        <i class="fas fa-hand-holding-heart fa-2x"></i>
+                    </div>
+                    <h4>Simple Borrowing</h4>
+                    <p class="text-muted">Easy 3-step process to borrow and return books</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon bg-info text-white mx-auto mb-4">
+                        <i class="fas fa-bell fa-2x"></i>
+                    </div>
+                    <h4>Due Reminders</h4>
+                    <p class="text-muted">Get notified before your books are due</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Books -->
+<section class="featured-books py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center display-6 fw-bold mb-5" data-aos="fade-up">Featured <span class="text-primary">Books</span></h2>
+        <div class="row g-4">
+            <% featuredBooks.forEach(book => { %>
+                <div class="col-md-3 col-6" data-aos="zoom-in">
+                    <div class="book-card">
+                        <img src="<%= book.image %>" alt="<%= book.title %>" class="book-cover">
+                        <div class="book-info">
+                            <h5 class="book-title"><%= book.title %></h5>
+                            <p class="book-author">by <%= book.author %></p>
+                            <span class="badge bg-primary"><%= book.category %></span>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section bg-primary text-white py-5">
+    <div class="container text-center">
+        <h2 class="display-6 fw-bold mb-4" data-aos="fade-up">Ready to Start Your Reading Journey?</h2>
+        <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">Join thousands of readers who trust LibraryMS.</p>
+        <a href="/register" class="btn btn-light btn-lg px-5" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-user-plus me-2"></i>Get Started
+        </a>
+    </div>
+</section>

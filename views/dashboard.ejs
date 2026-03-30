@@ -1,0 +1,198 @@
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
+        <p class="text-muted">Welcome back, <strong><%= user ? user.name : 'User' %></strong>!</p>
+    </div>
+</div>
+
+<% if (userRole === 'librarian') { %>
+    <!-- Librarian Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Total Books</h5>
+                            <h2 class="mb-0"><%= stats && stats.totalBooks ? stats.totalBooks : 0 %></h2>
+                        </div>
+                        <i class="bi bi-book fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Active Loans</h5>
+                            <h2 class="mb-0"><%= stats && stats.activeLoans ? stats.activeLoans : 0 %></h2>
+                        </div>
+                        <i class="bi bi-arrow-repeat fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Loans Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-list"></i> Current Loans</h5>
+                </div>
+                <div class="card-body">
+                    <% if (loans && loans.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Book Title</th>
+                                        <th>Author</th>
+                                        <th>Borrowed By</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% loans.forEach(loan => { %>
+                                        <tr class="<%= new Date(loan.due_date) < new Date() ? 'table-danger' : '' %>">
+                                            <td><%= loan.book_title || 'Unknown' %></td>
+                                            <td><%= loan.author || 'Unknown' %></td>
+                                            <td><%= loan.user_name || 'Unknown' %></td>
+                                            <td><%= loan.due_date ? new Date(loan.due_date).toLocaleDateString() : 'N/A' %></td>
+                                            <td>
+                                                <% if (new Date(loan.due_date) < new Date()) { %>
+                                                    <span class="badge bg-danger">Overdue</span>
+                                                <% } else { %>
+                                                    <span class="badge bg-success">Active</span>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <p class="text-muted text-center mb-0">No active loans</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% } else { %>
+    <!-- Member Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Currently Borrowed</h5>
+                            <h2 class="mb-0"><%= activeLoans ? activeLoans.length : 0 %></h2>
+                        </div>
+                        <i class="bi bi-book fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Loans -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-book"></i> Books You've Borrowed</h5>
+                </div>
+                <div class="card-body">
+                    <% if (activeLoans && activeLoans.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Book Title</th>
+                                        <th>Author</th>
+                                        <th>Borrowed Date</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% activeLoans.forEach(loan => { %>
+                                        <tr class="<%= new Date(loan.due_date) < new Date() ? 'table-danger' : '' %>">
+                                            <td><%= loan.title || 'Unknown' %></td>
+                                            <td><%= loan.author || 'Unknown' %></td>
+                                            <td><%= loan.borrow_date ? new Date(loan.borrow_date).toLocaleDateString() : 'N/A' %></td>
+                                            <td><%= loan.due_date ? new Date(loan.due_date).toLocaleDateString() : 'N/A' %></td>
+                                            <td>
+                                                <% if (new Date(loan.due_date) < new Date()) { %>
+                                                    <span class="badge bg-danger">Overdue</span>
+                                                <% } else { %>
+                                                    <span class="badge bg-success">Active</span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <form action="/books/return/<%= loan.id %>" method="POST" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="bi bi-arrow-return-left"></i> Return
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <p class="text-muted text-center mb-0">You haven't borrowed any books yet.</p>
+                        <div class="text-center mt-3">
+                            <a href="/books" class="btn btn-primary">Browse Books</a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan History -->
+    <% if (loanHistory && loanHistory.length > 0) { %>
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Reading History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Book Title</th>
+                                    <th>Author</th>
+                                    <th>Borrowed</th>
+                                    <th>Returned</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% loanHistory.forEach(loan => { %>
+                                    <tr>
+                                        <td><%= loan.title || 'Unknown' %></td>
+                                        <td><%= loan.author || 'Unknown' %></td>
+                                        <td><%= loan.borrow_date ? new Date(loan.borrow_date).toLocaleDateString() : 'N/A' %></td>
+                                        <td><%= loan.return_date ? new Date(loan.return_date).toLocaleDateString() : 'N/A' %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+<% } %>
